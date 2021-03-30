@@ -1,9 +1,15 @@
+import { dbService } from 'fbase';
 import React, {useState} from 'react';
 
 const Home = () => {
   const [nweet, setNweet] = useState("");
   const onSubmit = (event) => {
     event.preventDefault();
+    dbService.collection("nweets").add({
+      nweet,
+      createdAt: Date.now(),
+    });
+    setNweet("");
   };
   const onChange = (event) => {
     const {
@@ -13,8 +19,8 @@ const Home = () => {
   }
   return (
     <div>
-      <form>
-        <input type="text" placeholder="What's on your mind?" maxlength={120}/>
+      <form onSubmit={onSubmit}>
+        <input value={nweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120}/>
         <input type="submit" value="Nweet" />
       </form>
     </div>
