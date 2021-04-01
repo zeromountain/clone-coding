@@ -1,5 +1,6 @@
 import Nweet from 'components/Nweet';
-import { dbService } from 'fbase';
+import { v4 as uuidv4 } from 'uuid';
+import { dbService, storageService } from 'fbase';
 import React, {useState, useEffect} from 'react';
 
 const Home = ({ userObj }) => {
@@ -7,18 +8,7 @@ const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
   const [attachment, setAttachment] = useState();
-  // const getNweets = async () => {
-  //   const dbNweets = await dbService.collection("nweets").get();
-  //   // console.log(dbNweets);
-  //   dbNweets.forEach((document) => {
-  //     const nweetObject = {
-  //       ...document.data(),
-  //       id: document.id,
-  //     }
-  //     // set function => give a function instead of value
-  //     setNweets(prev => [nweetObject, ...prev]);
-  //   });
-  // };
+
   // after mounting component
   useEffect(() => {
     // getNweets();
@@ -33,12 +23,15 @@ const Home = ({ userObj }) => {
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
-    await dbService.collection("nweets").add({
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    const response = await fileRef.putString(attachment, "data_url");
+    console.log(response);
+    /* await dbService.collection("nweets").add({
       text: nweet,
       createdAt: Date.now(),
       creatorId: userObj.uid, 
     });
-    setNweet("");
+    setNweet(""); */
   };
   const onChange = (event) => {
     const {
