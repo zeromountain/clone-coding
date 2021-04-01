@@ -49,6 +49,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
       </>
       :<>
         <h4>{nweetObj.text}</h4>
+        {nweetObj.attachmentUrl && <img src={nweetObj.attachmentUrl} width="50px" height="50px" />  }
         {/* if you are owner for nweet, it is possible to delete and edit. */}
         { isOwner && 
         (
