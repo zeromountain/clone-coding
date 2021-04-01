@@ -6,7 +6,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
   const [newNweet, setNewNweet] = useState(nweetObj.text);
   const onDeleteClick = async () => {
     const ok = await window.confirm("Are you sure you want to delete this nweet?");
-    console.log(ok);
+
     if(ok) {
       // delete nweet
       dbService.doc(`nweets/${nweetObj.id}`).delete();
@@ -15,7 +15,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
   const toggleEditing = () => setEditing((prev) => !prev);
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log(nweetObj, newNweet); 
+
     await dbService.doc(`nweets/${nweetObj.id}`).update({
       text: newNweet,
     });
@@ -31,17 +31,21 @@ const Nweet = ({ nweetObj, isOwner }) => {
     <div>
       {editing ? 
       <>
-        <form onSubmit={onSubmit}>
-          <input 
-            type="text" 
-            placeholder="Edit your nweet" 
-            value={newNweet} 
-            required 
-            onChange={onChange} 
-          />
-          <input type="submit" value="Update Nweet" />
-        </form>
-        <button onClick={toggleEditing}>Cancel</button>
+        {isOwner && 
+        <>
+          <form onSubmit={onSubmit}>
+            <input 
+              type="text" 
+              placeholder="Edit your nweet" 
+              value={newNweet} 
+              required 
+              onChange={onChange} 
+            />
+            <input type="submit" value="Update Nweet" />
+          </form>
+          <button onClick={toggleEditing}>Cancel</button>
+        </>
+        }
       </>
       :<>
         <h4>{nweetObj.text}</h4>
