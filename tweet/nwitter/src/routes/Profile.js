@@ -2,9 +2,10 @@ import { authService, dbService } from 'fbase';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default ({ userObj }) => {
+export default ({ userObj, refreshUser }) => {
   const history = useHistory();
-  const [newDisplayName, setNweDisplayName] = useState(userObj.displayName);
+  // const [newDisplayName, setNweDisplayName] = useState(userObj.displayName);
+  const [newDisplayName, setNweDisplayName] = useState("");
   const  onLogOutClick = () => {
     authService.signOut();
     history.push("/");
@@ -35,8 +36,10 @@ export default ({ userObj }) => {
     event.preventDefault();
     if(userObj.displayName !== newDisplayName) {
       const response = await userObj.updateProfile({
-        displayName: newDisplayName,
+        displayName: newDisplayName, 
       }); 
+      refreshUser();
+      setNweDisplayName("");
     }
   }
 
