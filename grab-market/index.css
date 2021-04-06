@@ -61,6 +61,7 @@
   margin-top: 12px;
   border: 1px solid gray;
   border-radius: 12px;
+  overflow: hidden;
 }
 
 .product-image {
